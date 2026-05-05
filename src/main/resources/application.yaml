@@ -1,6 +1,31 @@
 spring:
   application:
     name: myenglish
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/myenglish}
+    username: ${DB_USERNAME:myenglish}
+    password: ${DB_PASSWORD:myenglish}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:myenglish-group}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+kafka:
+  consumer-group:
+    test: ${KAFKA_CONSUMER_GROUP_TEST:test-group}
+  topic:
+    word-events: ${KAFKA_TOPIC_WORD_EVENTS:word-events}
+    test: ${KAFKA_TOPIC_TEST:test}
 server:
   port: ${PORT:8080}
 
